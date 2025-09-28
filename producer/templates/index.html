@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Producer</title>
+
+
+    <script>
+        function ack_mess() {
+            let value = document.getElementById("produkt").value;
+            if (value.trim() === "") {
+                alert("Proszę wpisać produkt!");
+            } else {
+                alert("Wysłano " + value + " do RabbitMQ!");
+            }
+        }
+    </script>
+
+
+</head>
+<body>
+    <div style="text-align: center; border-style: dotted ;">
+        <h2>Producer</h2>
+
+        <p style="text-align: left; margin: 10%;">Hello from producer</p>
+
+        <form style="text-align: left; margin: 10%;" method="POST" action="/send">
+            Proszę podać produkt dla konsumenta
+            <input type="text" id="produkt" name="produkt">
+            <input type="submit" value="Wyślij">
+        </form>
+
+    </div>
+</body>
+</html>

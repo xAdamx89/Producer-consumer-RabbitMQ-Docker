@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consumer</title>
+</head>
+<body>
+    <div style="text-align: center; border-style: dotted ;">
+        <h2>Consumer</h2>
+
+        <p style="text-align: left; margin: 10%;">Hello from Consumer!</p>
+        <h3>Wiadomości od producenta:</h3>
+        <ul>
+            {% for msg in messages %}
+                <li>{{ msg }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+</html>
