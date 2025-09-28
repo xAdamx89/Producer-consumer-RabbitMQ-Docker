@@ -17,17 +17,14 @@ def  start_consumer():
         message = body.decode()
         print("[x] Received:", message)
 
-        # Liczymy litery (case-insensitive)
         counts = {}
         for c in message.lower():
-            if c.isalpha():  # ignorujemy cyfry, spacje i znaki specjalne
+            if c.isalpha():
                 counts[c] = counts.get(c, 0) + 1
 
-        # Tworzymy string w formacie: r=1, a=1, b=2,...
         letter_count_str = ", ".join(f"{k}={v}" for k, v in counts.items())
         print(f"{message} {letter_count_str}")
 
-        # Zachowujemy do listy do wyświetlenia w Flask
         messages.append(f"{message} → {letter_count_str}")
         if len(messages) > 10:
             messages.pop(0)
