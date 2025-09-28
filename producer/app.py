@@ -13,24 +13,22 @@ def  index():
     return render_template("index.html", arg="To jest argument producenta")
 
 @app.route("/send", methods=["POST"])
-@app.route("/send", methods=["POST"])
 def send():
-    produkt = request.form.get("produkt")
-    if not produkt:
-        return redirect("/")
-
-    # Tworzymy nowe połączenie i kanał tylko do wysyłki
-    credentials = pika.PlainCredentials('myuser', 'mypassword')
     connection = pika.BlockingConnection(pika.ConnectionParameters('rabbitmq', 5672, '/', credentials))
     channel = connection.channel()
-    channel.queue_declare(queue='produkty', durable=True)  # upewnij się, że kolejka istnieje
-
+    channel.queue_declare(queue='produkty')
+    produkt = request.form.get('produkt')
+    if not produkt or produkt.strip() == "":
+        print("Wartość produkt jest pusta")
+        return redirect(url_for('index'))
+    
     channel.basic_publish(exchange='',
-                          routing_key='produkty',
-                          body=produkt)
+                      routing_key='produkty',
+                      body=produkt)
     connection.close()
 
-    return redirect("/")
+    print("Wysłano do RabbitMQ: ", produkt)
+    return redirect(url_for('index'))
 
 
 
