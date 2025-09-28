@@ -4,18 +4,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Consumer</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<body>
-    <div style="text-align: center; border-style: dotted ;">
-        <h2>Consumer</h2>
+<body class="bg-light">
 
-        <p style="text-align: left; margin: 10%;">Hello from Consumer!</p>
-        <h3>Wiadomości od producenta:</h3>
-        <ul>
-            {% for msg in messages %}
-                <li>{{ msg }}</li>
-            {% endfor %}
-        </ul>
+    <div class="container mt-5">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h2 class="card-title text-center">Consumer</h2>
+                <p class="mt-3">Hello from Consumer!</p>
+                <h3 class="mt-4">Wiadomości od producenta:</h3>
+                <ul class="list-group">
+                    {% for msg in messages %}
+                        <li class="list-group-item">{{ msg }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
     </div>
+
 </body>
 </html>

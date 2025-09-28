@@ -6,22 +6,35 @@ app = Flask(__name__)
 
 messages = []
 
+credentials = pika.PlainCredentials('myuser', 'mypassword')
+connection = pika.BlockingConnection(pika.ConnectionParameters('rabbitmq', 5672, '/', credentials))
+channel = connection.channel()
+channel.queue_declare(queue='produkty')
+
 def  start_consumer():
-    credentials = pika.PlainCredentials('guest', 'guest')
-    connection = pika.BlockingConnection(pika.ConnectionParameters('rabbitmq', 5672, '/', credentials))
-    channel = connection.channel()
-    channel.queue_declare(queue='produkty')
 
     def callback(ch, method, properties, body):
         message = body.decode()
         print("[x] Received:", message)
-        messages.append(message)
+
+        # Liczymy litery (case-insensitive)
+        counts = {}
+        for c in message.lower():
+            if c.isalpha():  # ignorujemy cyfry, spacje i znaki specjalne
+                counts[c] = counts.get(c, 0) + 1
+
+        # Tworzymy string w formacie: r=1, a=1, b=2,...
+        letter_count_str = ", ".join(f"{k}={v}" for k, v in counts.items())
+        print(f"{message} {letter_count_str}")
+
+        # Zachowujemy do listy do wyświetlenia w Flask
+        messages.append(f"{message} → {letter_count_str}")
         if len(messages) > 10:
             messages.pop(0)
 
     channel.basic_consume(queue='produkty',
-                          auto_ack=True,
-                          on_message_callback=callback)
+                          on_message_callback=callback,
+                          auto_ack=True)
 
     print(" [*] Waiting for messages. To exit press CTRL+C")
     channel.start_consuming()
